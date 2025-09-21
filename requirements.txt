@@ -1,0 +1,9 @@
+# Core dependencies
+pillow>=10.0.0
+numpy>=1.24.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# Note:
+# - Tkinter is part of the Python standard distribution on Windows and is not installed via pip.
+# - These versions are conservative minimums; you can omit version pins if you prefer.
