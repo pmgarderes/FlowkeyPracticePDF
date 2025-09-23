@@ -43,8 +43,8 @@ pip install -r requirements.txt
 
 ## Save the HTML correctly (important)
 1. Open the song in your browser.
-2. (Optional)**Scroll through all pages** so every sheet image loads.
-3. Save the page locally (e.g., “Save page as…” → **Webpage, Complete**).
+2. (might be needed- see later) **Scroll through all pages** so every sheet image loads.
+3. Save the page locally (e.g., right-click-> “Save page as…” → **Webpage, Complete**).
    - You’ll get `SongName.htm(l)` in a folder you choose.
 
 ---
