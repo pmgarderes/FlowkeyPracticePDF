@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
 ## Save the HTML correctly (important)
 1. Open the song in your browser.
-2. **Scroll through all pages** so every sheet image loads.
+2. (Optional)**Scroll through all pages** so every sheet image loads.
 3. Save the page locally (e.g., “Save page as…” → **Webpage, Complete**).
    - You’ll get `SongName.htm(l)` in a folder you choose.
 
@@ -61,21 +61,15 @@ python flowkey2pdf_gui_debug.py
 1. **Select HTML/HTM…**  
    Pick the `.html`/`.htm` you saved. The app auto-fills the `images/` folder beside it.
 
-2. **1) Extract Images**  
-   - Downloads/copies every page of the sheet into `<html_folder>\images\sheet_###.png`.  
+2. **1) click "Extract Images"**  
+   - It will Downloads/copies every page of the sheet into `<html_folder>\images\sheet_###.png`.  
    - If it says “No images”, make sure you scrolled the whole song before saving.
 
 3. **Set layout**
    - **Measures per line**: e.g., `4.0` (average target).  
    - **Zoom**: `< 1.0` = smaller (more content per page), `> 1.0` = larger.
 
-4. **(Optional) Show advanced/debug**
-   - **Threshold**: leave blank to auto-detect (Otsu on normalized grayscale), or type a number (e.g., `200`).  
-   - **Min height %**: how much of the staff height a vertical line must cover to count as a barline (default 50).  
-   - **Min continuous %**: how uninterrupted that vertical line must be (default 50).  
-   - **Probe detection** saves overlays (`debug/` folder) showing detected bars (red) and measure boundaries (green).
-
-5. **2) Build PDF**  
+4. **2) Click Build PDF**  
    - Choose the output filename.  
    - The app writes a clean **A4** PDF with no gaps between measures.
 
