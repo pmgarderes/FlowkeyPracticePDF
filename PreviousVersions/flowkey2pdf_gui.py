@@ -268,6 +268,9 @@ def make_pdf_from_measures(
         x = margin_px; y = margin_px; row_h = 0
 
     for (sx0, sx1) in scaled_measures:
+        sx0, sx1 = max(0, int(sx0)), min(W_scaled, int(sx1))
+        if sx1 <= sx0:  # defensive fix for rare rounding cases
+            sx1 = min(W_scaled, sx0 + 1)
         crop = scaled.crop((sx0, 0, sx1, H_scaled))
         # wrap at edge
         if x > margin_px and x + crop.width > margin_px + content_w:

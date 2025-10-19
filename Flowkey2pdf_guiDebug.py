@@ -148,7 +148,7 @@ def page_pixels(page: str = "A4", orientation: str = "portrait", dpi: int = 300)
         w_mm, h_mm = h_mm, w_mm
     return mm_to_px(w_mm, dpi), mm_to_px(h_mm, dpi)
 
-def load_and_stitch(input_dir: str):
+def load_and_stitch(input_dir: str, force_binarize_tiles: bool=False, THR: int = 70,):
     names = sorted(n for n in os.listdir(input_dir)
                    if n.lower().endswith((".png", ".jpg", ".jpeg", ".webp")))
     if not names:
@@ -164,8 +164,9 @@ def load_and_stitch(input_dir: str):
             im = bg
         else:
             im = im.convert("RGB")
-        THR = 10  # tweak 180–210 if needed
-        im = im.convert("L").point(lambda p: 0 if p < THR else 255, "L").convert("RGB")
+        if force_binarize_tiles:
+            THR = 10  # tweak 180–210 if needed
+            im = im.convert("L").point(lambda p: 0 if p < THR else 255, "L").convert("RGB")
         # im = ImageOps.grayscale(im).convert("RGB")  # ← 1 line: kills green cast
         imgs.append(im)
         widths.append(im.width)
@@ -264,9 +265,10 @@ def make_pdf_from_measures(
     thr: int = 200,
     min_height_ratio: float = 0.50,
     min_cont_ratio: float = 0.50,
+    force_binarize_tiles: bool = False,
     debug_dir: str | None = None,
 ):
-    stitched = load_and_stitch(input_dir)
+    stitched = load_and_stitch(input_dir, force_binarize_tiles , thr)
     measures, info = detect_measures(stitched, thr, min_height_ratio, min_cont_ratio)
 
     if debug_dir:
@@ -318,6 +320,9 @@ def make_pdf_from_measures(
         x = margin_px; y = margin_px; row_h = 0
 
     for (sx0, sx1) in scaled_measures:
+        sx0, sx1 = max(0, int(sx0)), min(W_scaled, int(sx1))
+        if sx1 <= sx0:  # defensive fix for rare rounding cases
+            sx1 = min(W_scaled, sx0 + 1)
         crop = scaled.crop((sx0, 0, sx1, H_scaled))
         if x > margin_px and x + crop.width > margin_px + content_w:
             y += row_h + row_spacing
@@ -406,10 +411,11 @@ class App:
 
         # Advanced / debug vars
         self.show_adv = tk.BooleanVar(value=False)
-        self.debug_on = tk.BooleanVar(value=True)
+        self.debug_on = tk.BooleanVar(value=False)
         self.thr_str = tk.StringVar(value="10")  # blank => Otsu, else int
         self.min_height_pct = tk.IntVar(value=50) # 50%
         self.min_cont_pct = tk.IntVar(value=50)   # 50%
+        self.force_bin = tk.BooleanVar(value=False)  # hard-binarize tiles BEFORE stitching (off by default)
 
         # Row 0-2: file pick + images dir
         row = 0
@@ -427,6 +433,7 @@ class App:
         tk.Entry(root, textvariable=self.measures_per_line, width=10).grid(row=row, column=1, sticky="w", padx=6, pady=6); row += 1
         tk.Label(root, text="Zoom (0.5–1.5 typical):").grid(row=row, column=0, sticky="w", padx=6)
         tk.Entry(root, textvariable=self.zoom, width=10).grid(row=row, column=1, sticky="w", padx=6, pady=6); row += 1
+        tk.Checkbutton(root, text="Hard-binarize tiles", variable=self.force_bin).grid(row=row, column=0, sticky="w", padx=6); row += 1
 
         tk.Button(root, text="2) Build PDF", command=self.build_pdf).grid(row=row, column=0, sticky="w", padx=6, pady=12)
 
@@ -501,8 +508,9 @@ class App:
             messagebox.showerror("Missing", "Images folder not found. Extract images first."); return
         try:
             self.status.set("Probing…"); self.root.update_idletasks()
-            stitched = load_and_stitch(img_dir)
             thr = self._parse_thr()
+            stitched = load_and_stitch(img_dir, self.force_bin , thr)
+
             if thr is None:
                 # quick Otsu
                 g = ImageOps.grayscale(stitched)
@@ -565,6 +573,7 @@ class App:
                 thr=thr,
                 min_height_ratio=self.min_height_pct.get()/100.0,
                 min_cont_ratio=self.min_cont_pct.get()/100.0,
+                force_binarize_tiles=self.force_bin.get(),
                 debug_dir=debug_dir
             )
             if debug_dir:
