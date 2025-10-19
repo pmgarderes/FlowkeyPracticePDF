@@ -61,15 +61,25 @@ python flowkey2pdf_gui_debug.py
 1. **Select HTML/HTM…**  
    Pick the `.html`/`.htm` you saved. The app auto-fills the `images/` folder beside it.
 
-2. **1) click "Extract Images"**  
-   - It will Downloads/copies every page of the sheet into `<html_folder>\images\sheet_###.png`.  
+2. **1) Extract Images**  
+   - Downloads/copies every page of the sheet into `<html_folder>\images\sheet_###.png`.  
    - If it says “No images”, make sure you scrolled the whole song before saving.
 
 3. **Set layout**
    - **Measures per line**: e.g., `4.0` (average target).  
-   - **Zoom**: `< 1.0` = smaller (more content per page), `> 1.0` = larger.
+   - **Zoom**: `< 1.0` = smaller (more content per page), `> 1.0` = larger.  
+   - **Hard threshold (binarize tiles)** *(optional)*: check this **only if some images appear with a colored or tinted background (e.g., green hue)**.  
+     When enabled, it converts each tile to pure black & white before stitching. Normally this should stay **unchecked**, since it can slightly thin out staff lines.
 
-4. **2) Click Build PDF**  
+4. **(Optional) Show advanced/debug**
+   - **Threshold**: leave blank to auto-detect (Otsu on normalized grayscale), or type a number (e.g., `200`).  
+   - **Min height %**: how much of the staff height a vertical line must cover to count as a barline (default 50).  
+   - **Min continuous %**: how uninterrupted that vertical line must be (default 50).  
+   - **Probe detection** saves overlays (`debug/` folder) showing detected bars (red) and measure boundaries (green).  
+
+   **Note:** If you notice missing lines or other problems, please enable debugging, check “Save debug overlays”, and send me the resulting images from the `debug/` folder together with the parameters you used — this will help identify the issue.
+
+5. **Build PDF**  
    - Choose the output filename.  
    - The app writes a clean **A4** PDF with no gaps between measures.
 
