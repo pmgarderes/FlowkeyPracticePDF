@@ -1,7 +1,7 @@
 # FlowkeyPracticePDF
 
-A tiny GUI that turns a locally saved Flowkey page into a clean, paginated PDF of the sheet music.
-
+A tiny graphical user interface that turns a locally saved Flowkey page into a clean, paginated PDF of the sheet music.
+## ⭐ Stay Updated & Like if you find it usefull, This helps me know people are interested, and I’ll post updates or improvements there. 
 
 
 ⚠️ **Disclaimer**  
@@ -13,7 +13,17 @@ This project is provided for educational and personal use only.
 
 ---
 
-## What it does
+## Typical workflow (~1 min) - see details below - 
+1. Save a HTML file from your internet browser.  
+2. run the code to start the graphical user interface
+3. select parameters for the final layout ( measures per line, zoom..)   
+4. Click "save PDF" and print the music sheet !
+
+
+
+---
+
+## What this code does
 1. Reads your **saved HTML/HTM** file.  
 2. Extracts all sheet images into an `images/` folder beside the HTML.  
 3. Detects **barlines** and wraps lines **only at measure boundaries**.  
@@ -41,7 +51,7 @@ pip install -r requirements.txt
 ## 📖 Usage
 
 
-## Save the HTML correctly (important)
+## I - Save the HTML correctly (important)
 1. Open the song in your browser.
 2. (might be needed- see later) **Scroll through all pages** so every sheet image loads.
 3. Save the page locally (e.g., right-click-> “Save page as…” → **Webpage, Complete**).
@@ -49,7 +59,7 @@ pip install -r requirements.txt
 
 ---
 
-## Run the app
+## II - Run the app
 
 ```bash
 python flowkey2pdf_gui_debug.py
@@ -57,7 +67,7 @@ python flowkey2pdf_gui_debug.py
 
 ---
 
-## Using the GUI
+## III - Use the GUI to save the sheet music
 1. **Select HTML/HTM…**  
    Pick the `.html`/`.htm` you saved. The app auto-fills the `images/` folder beside it.
 
@@ -113,11 +123,6 @@ YourSongFolder/
 
 ---
 
-## ⭐ Stay Updated
-If you find this tool useful, please **watch** and **star** the repository on GitHub.  
-This helps me know people are interested, and I’ll post updates or improvements there.  
-
----
 
 ## 📜 License
 This project is licensed under a **Personal, Non-Commercial Use License**.  
