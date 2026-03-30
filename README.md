@@ -1,6 +1,7 @@
 # FlowkeyPracticePDF
 
-A tiny graphical user interface that turns a locally saved Flowkey page into a clean, paginated PDF of the sheet music.
+A tiny graphical user interface that turns a HTML Flowkey page into a clean, paginated PDF of the sheet music.
+
 ⭐ Stay Updated & Like 
 if you find it usefull, This helps me know people are interested, and I’ll post updates or improvements there. 
 
